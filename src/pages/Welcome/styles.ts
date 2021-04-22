@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-around'
     },
     title: {
         fontSize: 32,
@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         height: 56,
         aspectRatio: 1,
-        paddingHorizontal: 10
     },
     image: {
         height: Dimensions.get('screen').width * .7
