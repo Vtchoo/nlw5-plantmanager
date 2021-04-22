@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react'
 
 import { useColorScheme, View } from 'react-native'
-import { Welcome } from './src/pages/Welcome'
+import Routes from './src/routes'
 
 const App: () => ReactNode = () => {
 	const isDarkMode = useColorScheme() === 'dark';
 
 	return (
-		<Welcome/>
+		<Routes />
 	)
 }
 

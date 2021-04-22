@@ -4,8 +4,15 @@ import styles from './styles'
 import wateringImg from '../../assets/watering.png'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../../styles/colors'
+import { useNavigation } from '@react-navigation/core'
 
 function Welcome() {
+
+    const navigation = useNavigation()
+
+    function handleStart() {
+        navigation.navigate('UserIdentification')
+    }
 
     return (
         <View style={styles.container}>
@@ -20,7 +27,10 @@ function Welcome() {
                     Nós cuidamos de lembrar você sempre que precisar
             </Text>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleStart}
+                >
                     <Icon name='chevron-right' size={25} color={colors.white} />
                 </TouchableOpacity>
             </View>
