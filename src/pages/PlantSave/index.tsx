@@ -8,6 +8,7 @@ import colors from '../../styles/colors'
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Plant, savePlant, loadPlants } from '../../libs/storage'
+import PushNotification from 'react-native-push-notification'
 import NotificationService from '../../services/notifications'
 
 

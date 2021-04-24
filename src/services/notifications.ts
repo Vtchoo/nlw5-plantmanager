@@ -1,40 +1,54 @@
 import PushNotification, { PushNotificationObject, PushNotificationScheduleObject } from 'react-native-push-notification'
 
-PushNotification.configure({
+
+
+// PushNotification.popInitialNotification((notification) => {
+    //     console.log('Initial Notification', notification);
+    // });
     
-    onRegister: token => {
-        console.log('Notification token:', token)
-    },
+    class NotificationService {
+        
+        readonly DEFAULT_CHANNEL_ID = 'plantmanager-default'
 
-    onNotification: notification => {
-        console.log('Notification:', notification)
-    },
-})
+        constructor() {
+            
+            PushNotification.configure({
+                onRegister: token => {
+                    console.log('Notification token:', token)
+                },
+                
+                onNotification: notification => {
+                    console.log('Notification:', notification)
+                },
+                popInitialNotification: false,
+                requestPermissions: false,
+            })
 
-PushNotification.createChannel({
-    channelId: 'plant-manager-default',
-    channelName: 'Plant Manager default channel',
-    soundName: 'default',
-    importance: 4,
-    vibrate: true,
-}, created => console.log(`createChannel 'default-channel-id' returned '${created}'`))
+            PushNotification.createChannel({
+                channelId: this.DEFAULT_CHANNEL_ID,
+                channelName: 'Plant Manager default channel',
+                soundName: 'default',
+                importance: 4,
+                vibrate: true,
+            }, created => console.log(`createChannel '${this.DEFAULT_CHANNEL_ID}' returned '${created}'`))
+        }
 
-PushNotification.popInitialNotification((notification) => {
-    console.log('Initial Notification', notification);
-});
-  
-class NotificationService {
+        fire = (message: string, options: Partial<PushNotificationObject>) => {
+            PushNotification.localNotification({
+                message,
+                channelId: this.DEFAULT_CHANNEL_ID,
+                ...options,
+            })
+        }
 
-    constructor() {
-
-    }
-
-    static fire(notification: PushNotificationObject) {
-        PushNotification.localNotification(notification)
-    }
-    static schedule(notification: PushNotificationScheduleObject) {
-        PushNotification.localNotificationSchedule(notification)
-    }
+        schedule = (message: string, date: Date, options: Partial<PushNotificationScheduleObject>) => {
+            PushNotification.localNotificationSchedule({
+                message,
+                date,
+                channelId: this.DEFAULT_CHANNEL_ID,
+                ...options,
+            })
+        }
 }
 
-export default NotificationService
+export default new NotificationService()
