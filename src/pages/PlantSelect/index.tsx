@@ -52,6 +52,7 @@ function PlantSelect() {
         else
             setPlants(plants)
         
+        setPage(prev => prev + 1)
         setLoading(false)
         setloadingMore(false)
     }

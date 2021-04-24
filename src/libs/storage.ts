@@ -24,11 +24,18 @@ interface StoredPlants {
     }
 }
 
+async function getStoredPlants() {
+
+    const data = await AsyncStorage.getItem('@plantmanager:plants')
+    const storedPlants = data ? JSON.parse(data) as StoredPlants : {}
+
+    return storedPlants
+}
+
 async function savePlant(plant: Plant) {
     try {
-        
-        const data = await AsyncStorage.getItem('@plantmanager:plants')
-        const oldPlants = data ? JSON.parse(data) as StoredPlants : {}
+
+        const oldPlants = await getStoredPlants()
 
         const newPlant = {
             [plant.id]: {
@@ -50,9 +57,8 @@ async function savePlant(plant: Plant) {
 
 async function loadPlants(): Promise<Plant[]> {
     try {
-
-        const data = await AsyncStorage.getItem('@plantmanager:plants')
-        const plants = data ? JSON.parse(data) as StoredPlants : {}
+        
+        const plants = await getStoredPlants()
 
         const sorted = Object.keys(plants)
             .map(plant => ({
@@ -69,5 +75,19 @@ async function loadPlants(): Promise<Plant[]> {
     }
 }
 
-export { savePlant, loadPlants }
-export type { Plant }
+async function removePlant(plant: Plant): Promise<void> {
+
+    try {
+        
+        const plants = await getStoredPlants()
+        delete plants[plant.id]
+
+        await AsyncStorage.setItem('@plantmanager:plants', JSON.stringify(plants))
+
+    } catch (error) {
+        throw error
+    }
+}
+
+export { savePlant, loadPlants, removePlant }
+export type { Plant, StoredPlants }
