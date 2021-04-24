@@ -8,6 +8,7 @@ import colors from '../../styles/colors'
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Plant, savePlant, loadPlants } from '../../libs/storage'
+import NotificationService from '../../services/notifications'
 
 
 interface RouteParams {
@@ -49,6 +50,8 @@ function PlantSave() {
                 ...plant,
                 dateTimeNotification: selectedDateTime
             })
+
+            NotificationService.fire({ channelId: 'plantmanager-default', message: 'Planta salva' })
 
             navigation.navigate('Confirmation', {
                 title: 'Tudo certo!',
