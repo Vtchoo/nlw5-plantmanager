@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         // backgroundColor: colors.red
-        // padding: 20
+        paddingVertical: 20
     },
     greeting: {
         fontSize: 32,

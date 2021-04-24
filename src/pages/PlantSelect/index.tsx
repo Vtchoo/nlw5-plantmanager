@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
 import { FlatList } from 'react-native'
@@ -5,6 +6,7 @@ import { EnvironmentButton } from '../../components/EnvironmentButton'
 import { Header } from '../../components/Header'
 import { Load } from '../../components/Load'
 import { PlantCardPrimary } from '../../components/PlantCardPrimary'
+import { Plant } from '../../libs/storage'
 import api from '../../services/api'
 import colors from '../../styles/colors'
 import styles from './styles'
@@ -12,19 +14,6 @@ import styles from './styles'
 interface Environment {
     key: string
     title: string
-}
-
-interface Plant {
-    id: string
-    name: string
-    abount: string
-    water_tips: string
-    photo: string
-    environments: string[]
-    frequency: {
-        times: number
-        repeat_every: string
-    }
 }
 
 function PlantSelect() {
@@ -38,6 +27,8 @@ function PlantSelect() {
     const [page, setPage] = useState(1)
     const [loadingMore, setloadingMore] = useState(false)
     const [loadedAll, setLoadedAll] = useState(false)
+
+    const navigation = useNavigation()
 
     useEffect(() => {
         // fetchData()
@@ -76,6 +67,11 @@ function PlantSelect() {
         setloadingMore(true)
         setPage(prev => prev + 1)
         fetchPlants()
+    }
+
+    function handlePlantSelect(plant: Plant) {
+
+        navigation.navigate('PlantSave', { plant })
     }
 
     const filteredPlants = plants.filter(plant => selectedEnvironment === 'all' || plant.environments.includes(selectedEnvironment))
@@ -118,14 +114,17 @@ function PlantSelect() {
                 <FlatList
                     data={filteredPlants}
                     renderItem={({ item }) => (
-                        <PlantCardPrimary data={item}/>
+                        <PlantCardPrimary
+                            data={item}
+                            onPress={() => handlePlantSelect(item)}
+                        />
                     )}
+                    keyExtractor={item => item.id.toString()}
                     showsVerticalScrollIndicator={false}
                     numColumns={2}
                     contentContainerStyle={styles.contentContainerStyle}
                     onEndReachedThreshold={.1}
                     onEndReached={({ distanceFromEnd }) => handleFetchMore(distanceFromEnd)}
-                    
                 />
             </View>
             {loadingMore && <ActivityIndicator color={colors.green}/>}
