@@ -19,7 +19,6 @@ function MyPlants() {
     async function loadStoredPlants() {
         try {
             const storedPlants = await loadPlants()
-            console.log(typeof storedPlants[0].dateTimeNotification)
 
             const [firstPlant] = storedPlants
             
